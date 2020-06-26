@@ -1,5 +1,5 @@
 # vehicle-traction-force-calculator
-I created this after refreshing my memory on the "vehicle engineering" module I did when I studied Mechanical Engineering ...MANY YEARS AGO ;)
+I created this Vehicle Traction force Calculator during my "vehicle engineering" module I did when I studied Mechanical Engineering ...MANY YEARS AGO ;)
 
 There are 4 main forces one should consider when designing/conceptualizing a vehicle namely:
 
