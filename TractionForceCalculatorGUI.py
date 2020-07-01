@@ -4,11 +4,13 @@ import math
 
 fgcolour = "white"
 bgcolour = "#152238"
+err_message = ""
 
 #Applies the input dialogs
 root = tk.Tk() #creates a body window to work in
 root.title("Traction Force Calculator")
 
+#In case I want to use pop up messages in future I kept this
 # def popupmessage(popmsg):
 #     popup = tk.Tk();
 #     popup.wm_title("Error!")
@@ -23,24 +25,24 @@ def calc():
 
     try:
         # get all the variables in a workable float format (convert string inputs)
-        if(float(gradInput.get())>100.0):
+        if(float(grad_input.get())>100.0):
             #standard vehicles do not operate above 45 degrees since it is dangerous so we need to make sure we aren't working 45degrees or less
             errmessage = "Gradient must be\nless than 100%"
             tk.Label(frame, fg="#ff0000", bg=bgcolour, text=errmessage).grid(row=16, column=2, sticky="W")
-        elif(float(gradInput.get())<0.0):
+        elif(float(grad_input.get())<0.0):
             #if the gradient is negative it just means it is working in a different direction so just force the user to use a positive value
             errmessage = "Gradient value\nmust be positive"
             tk.Label(frame, fg="#ff0000", bg=bgcolour, text=errmessage).grid(row=16, column=2, sticky="W")
         else:
             #retrieve all the values in a workable format
-            vel = float(velInput.get())
-            acc = float(accInput.get())
-            grad = math.atan(float(gradInput.get())/100)
-            mass = float(massInput.get())
-            aero = float(aeroInput.get())
-            roll= float(rollInput.get())
-            area = float(areaInput.get())
-            dens = float(densInput.get())
+            vel = float(vel_input.get())
+            acc = float(acc_input.get())
+            grad = math.atan(float(grad_input.get())/100)
+            mass = float(mass_input.get())
+            aero = float(aero_input.get())
+            roll= float(roll_input.get())
+            area = float(area_input.get())
+            dens = float(dens_input.get())
             #Calculate force due to aerodynamics drag
             faero = aero*area*((dens*(vel**2))/2)
             #Calculate force due to rolling resistance
@@ -59,29 +61,28 @@ def calc():
             tk.Label(frame, fg=fgcolour, bg=bgcolour, text=tracforcestring).grid(row=14, column=3, sticky="W")
 
 
-    except ValueError as ve:
+    except ValueError:
         #if the input value is invalid i.e. is not a float, display an error to the user
-        errmessage = "Invalid Value/Empty Field"
-        tk.Label(frame, fg="#ff0000", bg=bgcolour, text=errmessage).grid(row=16, column=3, sticky="W")
+        #I haven't figured out how to clear this label yet but I will figure it out when I have time to come back to this
+        err_message = "Invalid Value/Empty Field"
+        tk.Label(frame, fg="#ff0000", bg=bgcolour, text=err_message).grid(row=16, column=3, sticky="W")
 
-
-
-def appTy():
+def app_typ():
     #This is to apply typical values for cars for quick calculations
-    aeroInput.delete(0,"end")
-    aeroInput.insert(0, "0.29")
+    aero_input.delete(0,"end")
+    aero_input.insert(0, "0.29")
 
-    areaInput.delete(0, "end")
-    areaInput.insert(0, "2.2")
+    area_input.delete(0, "end")
+    area_input.insert(0, "2.2")
 
-    rollInput.delete(0, "end")
-    rollInput.insert(0, "0.01")
+    roll_input.delete(0, "end")
+    roll_input.insert(0, "0.01")
 
-    massInput.delete(0, "1200")
-    massInput.insert(0, "1200")
+    mass_input.delete(0, "1200")
+    mass_input.insert(0, "1200")
 
-    densInput.delete(0, "end")
-    densInput.insert(0, "1.25")
+    dens_input.delete(0, "end")
+    dens_input.insert(0, "1.25")
 
 #Making the GUI
 canvas = tk.Canvas(root, height=500, width=700) #canvas setup
@@ -91,7 +92,7 @@ frame = tk.Frame(root, bg=bgcolour) #a frame to use within canvas, nicer to work
 #80% of canvas width and height seems to work the best
 frame.place(relwidth=0.8, relheight=0.8, relx=0.1, rely=0.1) #places the frame in the canvas
 
-title = tk.Label(frame, text="Basic Vehicle Model Calculator", fg=fgcolour, bg=bgcolour).grid(row=0, column=0)
+tk.Label(frame, text="Basic Vehicle Model Calculator", fg=fgcolour, bg=bgcolour).grid(row=0, column=0)
 tk.Label(frame, bg=bgcolour, text="          ").grid(row=1, column=0)
 tk.Label(frame, bg=bgcolour, text=" ").grid(row=0, column=1)
 tk.Label(frame, bg=bgcolour, text=" ").grid(row=2, column=0)
@@ -111,47 +112,41 @@ tk.Label(frame, fg=fgcolour, bg=bgcolour, text="kg").grid(row=6, column=3, stick
 tk.Label(frame, fg=fgcolour, bg=bgcolour, text="m^2").grid(row=9, column=3, sticky="W")
 tk.Label(frame, fg=fgcolour, bg=bgcolour, text="kg/m^3").grid(row=10, column=3, sticky="W")
 
-velInput = tk.Entry(frame, fg=bgcolour, bg=fgcolour)
-velInput.grid(row=3, column=2)
+vel_input = tk.Entry(frame, fg=bgcolour, bg=fgcolour)
+vel_input.grid(row=3, column=2)
 
-accInput = tk.Entry(frame, fg=bgcolour, bg=fgcolour)
-accInput.grid(row=4, column=2)
+acc_input = tk.Entry(frame, fg=bgcolour, bg=fgcolour)
+acc_input.grid(row=4, column=2)
 
-gradInput = tk.Entry(frame, fg=bgcolour, bg=fgcolour)
-gradInput.grid(row=5, column=2)
+grad_input = tk.Entry(frame, fg=bgcolour, bg=fgcolour)
+grad_input.grid(row=5, column=2)
 
-massInput = tk.Entry(frame, fg=bgcolour, bg=fgcolour)
-massInput.grid(row=6, column=2)
+mass_input = tk.Entry(frame, fg=bgcolour, bg=fgcolour)
+mass_input.grid(row=6, column=2)
 
-aeroInput = tk.Entry(frame, fg=bgcolour, bg=fgcolour)
-aeroInput.grid(row=7, column=2)
+aero_input = tk.Entry(frame, fg=bgcolour, bg=fgcolour)
+aero_input.grid(row=7, column=2)
 
-rollInput = tk.Entry(frame, fg=bgcolour, bg=fgcolour)
-rollInput.grid(row=8, column=2)
+roll_input = tk.Entry(frame, fg=bgcolour, bg=fgcolour)
+roll_input.grid(row=8, column=2)
 
-areaInput = tk.Entry(frame, fg=bgcolour, bg=fgcolour)
-areaInput.grid(row=9, column=2)
+area_input = tk.Entry(frame, fg=bgcolour, bg=fgcolour)
+area_input.grid(row=9, column=2)
 
-densInput = tk.Entry(frame, fg=bgcolour, bg=fgcolour)
-densInput.grid(row=10, column=2)
+dens_input = tk.Entry(frame, fg=bgcolour, bg=fgcolour)
+dens_input.grid(row=10, column=2)
 
 tk.Label(frame, bg=bgcolour, text="          ").grid(row=11, column=0)
-calcButton = tk.Button(frame, text="Calculate", padx=10, pady=5, fg=fgcolour, bg=bgcolour, command=lambda:calc())
-calcButton.grid(row=12,column=2)
-typiButton = tk.Button(frame, text="Typical Parameters", padx=10, pady=5, fg=fgcolour, bg=bgcolour, command=lambda:appTy())
-typiButton.grid(row=12,column=0)
+calc_button = tk.Button(frame, text="Calculate", padx=10, pady=5, fg=fgcolour, bg=bgcolour, command=lambda:calc())
+calc_button.grid(row=12,column=2)
+typi_button = tk.Button(frame, text="Typical Parameters", padx=10, pady=5, fg=fgcolour, bg=bgcolour, command=lambda:app_typ())
+typi_button.grid(row=12,column=0)
 
 #label for final output answer and error message
 tk.Label(frame, fg=fgcolour, bg=bgcolour, text="").grid(row=13, column=2, sticky="E")
 tk.Label(frame, fg=fgcolour, bg=bgcolour, text="Traction force  = ").grid(row=14, column=2, sticky="E")
 tk.Label(frame, fg=fgcolour, bg=bgcolour, text="").grid(row=15, column=2, sticky="E")
 tk.Label(frame, fg=fgcolour, bg=bgcolour, text="Error Message  = ").grid(row=16, column=2, sticky="E")
+# tk.Label(frame, fg=bgcolour, bg=bgcolour, text=err_message).grid(row=16, column=3, sticky="W")
 
 root.mainloop() #run the little GUI
-
-
-
-
-
-
-
